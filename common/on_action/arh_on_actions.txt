@@ -1,0 +1,247 @@
+﻿on_birthday = {
+	on_actions = {
+		arh_random_death
+	}
+}
+
+on_birthday_childhood = {
+	on_actions = {
+		arh_disease_outbreak_pulse_childhood
+	}
+}
+
+on_birthday_adulthood = {
+	on_actions = {
+		arh_disease_outbreak_pulse_adulthood
+	}
+}
+
+arh_random_death = {
+	trigger = {
+		is_lowborn = no
+	}
+	random_events = {
+		chance_to_happen = 15
+
+		# Random deaths.
+		20 = harm.1001		# Choke On It - Choking at a feast.
+		20 = harm.1002		# Choke On It - foreboding event.
+		20 = harm.1011		# Ride or Die - Something spooks your horse and it goes flying out of control.
+		20 = harm.1012		# Ride or Die - foreboding event.
+		20 = harm.1021		# Finger-Licking Good - Eating too much exotic food.
+		20 = harm.1022		# Finger-Licking Good - foreboding event.
+		20 = harm.1031		# A Clogged Throat - Quinsy-induced choking.
+		20 = harm.1032		# A Clogged Throat - foreboding event.
+		20 = harm.1041		# Probably Safe - Fall into a body of water.
+		20 = harm.1042		# Probably Safe - foreboding event.
+		20 = harm.1051		# Flickering Flames - A small fire gets out of hand.
+		20 = harm.1052		# Flickering Flames - foreboding event.
+		20 = harm.1061		# A Moderate Tumble - Falling out of a window whilst admiring the view.
+		20 = harm.1062		# A Moderate Tumble - foreboding event.on the door/eavesdropping on a conversation below.
+		20 = harm.1071		# Crimes of Passion - A scuffle between two rivals sees you accidentally stabbed.
+		20 = harm.1072		# Crimes of Passion - foreboding event.
+		20 = harm.1081		# Storm's Wrath - Death in a storm, due to a lightning hit/being crushed by a falling tree/twatted by a falling rock/catching a terminal chill.
+		20 = harm.1082		# Storm's Wrath - foreboding event.chill.
+		20 = harm.1091		# Aching Minds - Struck down by an aneurysm.
+		20 = harm.1092		# Aching Minds - foreboding event.
+		5 = harm.1101		# Street Safety - Run over by a rider/run-away cart.
+		5 = harm.1102		# Street Safety - foreboding event.
+		20 = harm.1111		# People's Justice - Stabbed by a servant in your capital that hates you.
+		20 = harm.1112		# People's Justice - foreboding event.
+	}
+}
+
+arh_disease_outbreak_pulse_childhood = {
+	trigger = {
+		is_lowborn = no
+	}
+	random_events = {
+		chance_to_happen = 30
+
+		chance_of_no_event = {
+			# Perk reduces chance of sickness for yourself and for Courtiers/Guests
+			if = {
+				limit = {
+					has_perk = wash_your_hands_perk
+				}
+				value = 50
+			}
+			else_if = {
+				limit = {
+					exists = host
+					host = { has_perk = wash_your_hands_perk }
+				}
+				value = 25
+			}
+			if = { #Wet Nurse reduces chance of sickness for children
+				limit = {
+					OR = {
+						liege ?= {
+							any_court_position_holder ?= {
+								type = wet_nurse_court_position
+								has_relation_nursed_child = root
+							}
+						}
+						root = {
+							any_court_position_holder ?= {
+								type = wet_nurse_court_position
+								has_relation_nursed_child = root
+							}
+						}
+					}
+					root = { is_adult = no }
+				}
+				value = 25
+			}
+			if = { # Difficulty
+				limit = {
+					is_ai = no
+					has_game_rule = easy_difficulty
+				}
+				value = 25
+			}
+			else_if = {
+				limit = {
+					is_ai = no
+					has_game_rule = very_easy_difficulty
+				}
+				value = 75
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					has_game_rule = easy_difficulty
+					any_parent = {
+						is_ai = no
+					}
+				}
+				value = 15
+			}
+			else_if = {
+				limit = {
+					is_ai = no
+					has_game_rule = very_easy_difficulty
+					any_parent = {
+						is_ai = no
+					}
+				}
+				value = 50
+			}
+			if = { # Game Rule
+				limit = {
+					has_game_rule = fewer_minor_disease_frequency
+				}
+				value = 30
+			}
+		}
+
+		4000 = health.1001 	#Ill
+		80 = health.1002  	#Pneumonic, x35 as common when ill
+		250 = health.1003 	#Gout-ridden
+		40 = health.1004  	#Leprosy
+		100 = health.1005 	#Typhus, 7x common when commander/combat character
+		100 = health.1006 	#Consumption
+		150 = health.1007 	#Cancer
+		75 = health.1008 	#Lover's Pox
+		25 = health.1009 	#Great pox
+		2 = health.1010		#Smallpox
+		2 = health.1011		#Bubonic plague, won't happen before 1346
+	}
+}
+arh_disease_outbreak_pulse_adulthood = {
+	trigger = {
+		is_lowborn = no
+	}
+	random_events = {
+		chance_to_happen = 10
+
+		chance_of_no_event = {
+			# Perk reduces chance of sickness for yourself and for Courtiers/Guests
+			if = {
+				limit = {
+					has_perk = wash_your_hands_perk
+				}
+				value = 50
+			}
+			else_if = {
+				limit = {
+					exists = host
+					host = { has_perk = wash_your_hands_perk }
+				}
+				value = 25
+			}
+			if = { #Wet Nurse reduces chance of sickness for children
+				limit = {
+					OR = {
+						liege ?= {
+							any_court_position_holder ?= {
+								type = wet_nurse_court_position
+								has_relation_nursed_child = root
+							}
+						}
+						root = {
+							any_court_position_holder ?= {
+								type = wet_nurse_court_position
+								has_relation_nursed_child = root
+							}
+						}
+					}
+					root = { is_adult = no }
+				}
+				value = 25
+			}
+			if = { # Difficulty
+				limit = {
+					is_ai = no
+					has_game_rule = easy_difficulty
+				}
+				value = 25
+			}
+			else_if = {
+				limit = {
+					is_ai = no
+					has_game_rule = very_easy_difficulty
+				}
+				value = 75
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					has_game_rule = easy_difficulty
+					any_parent = {
+						is_ai = no
+					}
+				}
+				value = 15
+			}
+			else_if = {
+				limit = {
+					is_ai = no
+					has_game_rule = very_easy_difficulty
+					any_parent = {
+						is_ai = no
+					}
+				}
+				value = 50
+			}
+			if = { # Game Rule
+				limit = {
+					has_game_rule = fewer_minor_disease_frequency
+				}
+				value = 30
+			}
+		}
+
+		4000 = health.1001 	#Ill
+		80 = health.1002  	#Pneumonic, x35 as common when ill
+		250 = health.1003 	#Gout-ridden
+		40 = health.1004  	#Leprosy
+		100 = health.1005 	#Typhus, 7x common when commander/combat character
+		100 = health.1006 	#Consumption
+		150 = health.1007 	#Cancer
+		75 = health.1008 	#Lover's Pox
+		25 = health.1009 	#Great pox
+		2 = health.1010		#Smallpox
+		2 = health.1011		#Bubonic plague, won't happen before 1346
+	}
+}
